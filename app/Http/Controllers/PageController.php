@@ -88,6 +88,8 @@ class PageController extends Controller
         $draft = $this->pageRepo->getById($pageId);
         $this->checkOwnablePermission('page-create', $draft->getParent());
 
+        $draft = \BookStack\Util\YapiClient::changePageName($draft);
+
         $editorData = new PageEditorData($draft, $this->pageRepo, $request->query('editor', ''));
         $this->setPageTitle(trans('entities.pages_edit_draft'));
 
@@ -134,6 +136,11 @@ class PageController extends Controller
         }
 
         $this->checkOwnablePermission('page-view', $page);
+
+
+        //标签[yapi_interface]8966[/yapi_interface]
+        $yapiClient = new \BookStack\Util\YapiClient();
+        $page->html = $yapiClient->parseInterfaceTag($page->html);
 
         $pageContent = (new PageContent($page));
         $page->html = $pageContent->render();
@@ -186,6 +193,8 @@ class PageController extends Controller
     {
         $page = $this->pageRepo->getBySlug($bookSlug, $pageSlug);
         $this->checkOwnablePermission('page-update', $page);
+
+        \BookStack\Util\YapiClient::changePageName($page);
 
         $editorData = new PageEditorData($page, $this->pageRepo, $request->query('editor', ''));
         if ($editorData->getWarnings()) {

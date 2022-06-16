@@ -134,7 +134,7 @@ class PageRepo
     public function getNewDraftPage(Entity $parent)
     {
         $page = (new Page())->forceFill([
-            'name'       => trans('entities.pages_initial_name'),
+            'name'       => \BookStack\Util\YapiClient::getPageName($parent),
             'created_by' => user()->id,
             'owned_by'   => user()->id,
             'updated_by' => user()->id,
