@@ -31,6 +31,15 @@ class YapiClient
 
     public static function changePageName($page)
     {
+        preg_match_all("/\[yapi_interface\](.*)\[\/yapi_interface\]/i", $page->html, $yapi);
+        if ($yapi && count($yapi) > 1) {
+            foreach ($yapi[1] as $interface_id) {
+                if (is_numeric($interface_id)) {
+                    Cache::put('yapi_interface_' . $interface_id, null, 3600 * 24);
+                }
+            }
+        }
+
         if ($page->getRelation("book")->getOriginal("name") == "发版变更脚本记录" && $page->getOriginal("chapter_id") > 0) {
             $parent = $page->chapter()->first();
             $page = $page->forceFill([
@@ -173,15 +182,29 @@ class YapiClient
             "done"   => "已完成",
             "undone" => "未完成"
         );
+        $required = array(
+            "0" => "否",
+            "1" => "是"
+        );
 
         //基本信息
         $html = "<h2 id='bkmrk-基本信息'>基本信息</h2>";
-        $html .= "<table width=98%><tr><td width=120px><b>接口名称：</b></td><td>" . $api['title'] . "</td><td width=120px><b>状  态：</b></td><td>" . $status[$api['status']] . "</td></tr><td><b>接口路径：</b></td><td>" . $api['path'] . "</td><td><b>更新时间：</b></td><td>" . date("Y-m-d H:i:s", $api['up_time'] + 8 * 3600) . "</td><tr></tr><tr><td><b>Mock地址：</b></td><td colspan='3'>" . $project['basepath'] . $api['path'] . "</td></tr></table>";
+        $html .= "<table width=98%><tr><td width=120px><b>接口名称：</b></td><td>"
+            . $api['title'] . "</td><td width=120px><b>状  态：</b></td><td>"
+            . $status[$api['status']] . "</td></tr><td><b>接口路径：</b></td><td>"
+            . $api['path'] . "</td><td><b>更新时间：</b></td><td>"
+            . date("Y-m-d H:i:s", $api['up_time'] + 8 * 3600) . "</td><tr></tr><tr><td><b>Mock地址：</b></td><td colspan='3'>"
+            . env("YAPI_DOMAIN") . $project['basepath'] . $api['path'] . "</td></tr></table>";
 
         //请求参数
         $html .= "<h2 id='bkmrk-请求参数'>请求参数</h2>";
         $html .= "<h3 id='bkmrk-Headers'>Headers:</h3>";
-        $html .= "<table width=98%><tr style='font-weight: bold'><td>参数名称</td><td>参数值</td><td>是否必填</td></tr><tr><td>Content-Type</td><td>application/json</td><td>是</td></tr></table>";
+        $html .= "<table width=98%><tr style='font-weight: bold'><td>参数名称</td><td width='50%'>参数值</td><td>是否必填</td></tr>";
+        foreach ($api["req_headers"] as $req_headers) {
+            $html .= "<tr><td>$req_headers[name]</td><td>$req_headers[value]</td><td>" . $required[$req_headers["required"]] . "</td></tr>";
+        }
+        $html .= "</table>";
+
         $html .= "<h3 id='bkmrk-Body'>Body:</h3>";
         $request = $api["req_body_other"];
         $request_json = json_decode($request, true);
@@ -209,7 +232,13 @@ class YapiClient
         $html .= "<h2 id='bkmrk-备注'>备注</h2>";
         $html .= "<table width=98%><tr><td width=120px>" . $api['desc'] . "</td></tr></table>";
 
-        Cache::put('yapi_interface_' . $id, $html, 3600 * 24);
+        //链接到yapi
+        $html .= "<a href='" . env("YAPI_DOMAIN") . "/project/$api[project_id]/interface/api/$id' target='_blank' style='color: #f5f5f5'>api-id=$id</a>";
+
+        if (!env("APP_DEBUG")) {
+            Cache::put('yapi_interface_' . $id, $html, 3600 * 24);
+        }
+
         return $html;
     }
 
