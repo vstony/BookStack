@@ -231,7 +231,7 @@ class YapiClient
 
         //备注
         $html .= "<h2 id='bkmrk-备注'>备注</h2>";
-        $html .= "<table width=98%><tr><td width=120px>" . $api['desc'] . "</td></tr></table>";
+        $html .= "<table width=98%><tr><td>" . $api['desc'] . "</td></tr></table>";
 
         //链接到yapi
         $html .= "<a href='" . env("YAPI_DOMAIN") . "/project/$api[project_id]/interface/api/$id' target='_blank' style='color: #f5f5f5'>api-id=$id</a>";
