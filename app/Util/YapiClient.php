@@ -50,7 +50,7 @@ class YapiClient
         return $page;
     }
 
-    public static function getPageName($parent)
+    public static function getDefaultPage($parent, $page)
     {
         if ($parent instanceof Chapter && $parent->name != "发版变更脚本记录" && $parent->book->name == "发版变更脚本记录") {
             $name = $parent->getOriginal("name") . "-" . date("Ymd");
@@ -59,10 +59,22 @@ class YapiClient
                 $redirectLocation = "/books/" . $page->getOriginal("book_slug") . "/chapter/" . $parent->getOriginal("name");
                 throw new NotifyException("页面 $name 已存在，请直接编辑", $redirectLocation);
             }
-        } else {
-            $name = trans('entities.pages_initial_name');
+
+            $pageTemplate = Page::visible()->where("name", "=", '发版变更脚本模板')->first();
+            $page = (new Page())->forceFill([
+                'name'       => $name,
+                'created_by' => user()->id,
+                'owned_by'   => user()->id,
+                'updated_by' => user()->id,
+                'editor'     => 'markdown',
+                'text'       => $pageTemplate->text,
+                'html'       => $pageTemplate->html,
+                'markdown'   => $pageTemplate->markdown,
+                'draft'      => true,
+            ]);
         }
-        return $name;
+
+        return $page;
     }
 
     private function login()
@@ -124,8 +136,8 @@ class YapiClient
             $html .= "<td>" . (array_key_exists("type", $property) ? $property['type'] : "") . "</td>";
             $html .= "<td>" . (array_key_exists("required", $api) ? $bool[in_array($key, $api['required'])] : $bool[0]) . "</td>";
             $html .= "<td>" . (array_key_exists("default", $property) ? $property['default'] : "") . "</td>";
-            $html .= "<td>" . (array_key_exists("description", $property) ? $property['description'] : "") . "</td>";
-            $html .= "<td>";
+            $html .= "<td style='font-size: 8px'>" . (array_key_exists("description", $property) ? $this->processBreakLine($property['description']) : "") . "</td>";
+            $html .= "<td style='font-size: 8px'>";
             $html .= array_key_exists("maxLength", $property) && $property['maxLength'] ? "最大长度：" . $property['maxLength'] . "<br/>" : "";
             $html .= array_key_exists("minLength", $property) && $property['minLength'] ? "最小长度：" . $property['minLength'] . "<br/>" : "";
             $html .= array_key_exists("mock", $property) && array_key_exists("mock", $property['mock']) && $property['mock']['mock'] ? "Mock：" . $property['mock']['mock'] : "";
@@ -138,6 +150,11 @@ class YapiClient
             }
         }
         return $html;
+    }
+
+    private function processBreakLine($string)
+    {
+        return str_replace("/", "<br/>", $string);
     }
 
     private function getInterfaceTagHtml($id)
@@ -211,7 +228,7 @@ class YapiClient
         $request_json = json_decode($request, true);
 
         $indent = "";
-        $html .= "<table width=98% class='apitable'><tr style='font-weight: bold'><td>参数名称</td><td width=80px>类型</td><td width=50px>必填</td><td width=80px>默认值</td><td width=120px>备注</td><td>其他信息</td></tr>";
+        $html .= "<table width=98% class='apitable'><tr style='font-weight: bold'><td>参数名称</td><td width=70px>类型</td><td width=45px>必填</td><td width=60px>默认值</td><td width=240px>备注</td><td width=130px>其他信息</td></tr>";
         $toggleclass = 'reqtr';
         $trclass = 'reqtr';
         $html .= $this->echoYapiTable($request_json, $indent, $toggleclass, $trclass);
@@ -223,7 +240,7 @@ class YapiClient
         $response_json = json_decode($response, true);
 
         $indent = "";
-        $html .= "<table width=98% class='apitable'><tr style='font-weight: bold'><td>参数名称</td><td width=80px>类型</td><td width=50px>必填</td><td width=80px>默认值</td><td width=120px>备注</td><td>其他信息</td></tr>";
+        $html .= "<table width=98% class='apitable'><tr style='font-weight: bold'><td>参数名称</td><td width=70px>类型</td><td width=45px>必填</td><td width=60px>默认值</td><td width=240px>备注</td><td width=130px>其他信息</td></tr>";
         $toggleclass = 'resptr';
         $trclass = 'resptr';
         $html .= $this->echoYapiTable($response_json, $indent, $toggleclass, $trclass);
