@@ -1,5 +1,6 @@
 <?php namespace BookStack\Util;
 
+use BookStack\Entities\Models\Chapter;
 use BookStack\Entities\Models\Page;
 use BookStack\Exceptions\NotifyException;
 use Illuminate\Support\Facades\Cache;
@@ -40,7 +41,7 @@ class YapiClient
             }
         }
 
-        if ($page->getRelation("book")->getOriginal("name") == "发版变更脚本记录" && $page->getOriginal("chapter_id") > 0) {
+        if ($page->chapter_id > 0 && $page->book->name == "发版变更脚本记录") {
             $parent = $page->chapter()->first();
             $page = $page->forceFill([
                 'name' => $parent->getRawAttribute("name") . "-" . date("Ymd")
@@ -51,7 +52,7 @@ class YapiClient
 
     public static function getPageName($parent)
     {
-        if ($parent->getOriginal("name") != "发版变更脚本记录" && $parent->getRelation("book")->getOriginal("name") == "发版变更脚本记录") {
+        if ($parent instanceof Chapter && $parent->name != "发版变更脚本记录" && $parent->book->name == "发版变更脚本记录") {
             $name = $parent->getOriginal("name") . "-" . date("Ymd");
             $page = Page::visible()->where("name", "=", $name)->first();
             if ($page) {
@@ -189,12 +190,12 @@ class YapiClient
 
         //基本信息
         $html = "<h2 id='bkmrk-基本信息'>基本信息</h2>";
-        $html .= "<table width=98%><tr><td width=120px><b>接口名称：</b></td><td>"
+        $html .= "<table width=98%><tr><td width=120px><b>接口名称：</b></td><td width=400px>"
             . $api['title'] . "</td><td width=120px><b>状  态：</b></td><td>"
             . $status[$api['status']] . "</td></tr><td><b>接口路径：</b></td><td>"
-            . $api['path'] . "</td><td><b>更新时间：</b></td><td>"
+            . $project['basepath'] . $api['path'] . "</td><td><b>更新时间：</b></td><td>"
             . date("Y-m-d H:i:s", $api['up_time'] + 8 * 3600) . "</td><tr></tr><tr><td><b>Mock地址：</b></td><td colspan='3'>"
-            . env("YAPI_DOMAIN") . $project['basepath'] . $api['path'] . "</td></tr></table>";
+            . env("YAPI_DOMAIN") . "/mock/$api[project_id]" . $project['basepath'] . $api['path'] . "</td></tr></table>";
 
         //请求参数
         $html .= "<h2 id='bkmrk-请求参数'>请求参数</h2>";
