@@ -355,4 +355,16 @@ return [
     'copy_consider_images' => '页面中的图像文件不会被复制，原始图像将保留它们与最初上传到的页面的关系。',
     'copy_consider_attachments' => '页面中的附件不会被复制。',
     'copy_consider_access' => '改变位置、所有者或权限可能会导致此内容被以前无法访问的人访问。',
+
+    // Conversions
+    'convert_to_shelf' => '转换为书架',
+    'convert_to_shelf_contents_desc' => '你可以将这本书转换为具有相同内容的新书架。本书中的章节将被转换为图书。如果这本书包含任何不在章节分类中的页面，那么将会有一本图书被重命名并包含这些页面，这本书也将成为新书架的一部分。',
+    'convert_to_shelf_permissions_desc' => '在这本书上设置的任何权限都将复制到所有未强制执行权限的新书架和新子图书上。请注意，书架上的权限不会像图书那样继承到内容物上。',
+    'convert_book' => '转换图书',
+    'convert_book_confirm' => '您确定要转换此图书吗？',
+    'convert_undo_warning' => '这可不能轻易撤消。',
+    'convert_to_book' => '转换为图书',
+    'convert_to_book_desc' => '您可以将此章节转换为具有相同内容的新图书。此章节中设置的任何权限都将复制到新图书上，但从父图书继承的任何权限都不会被复制，这可能会导致访问控制发生变化。',
+    'convert_chapter' => '转换章节',
+    'convert_chapter_confirm' => '您确定要转换此章节吗？',
 ];
