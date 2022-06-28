@@ -3,6 +3,7 @@
 use BookStack\Entities\Models\Chapter;
 use BookStack\Entities\Models\Page;
 use BookStack\Exceptions\NotifyException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class YapiClient
@@ -77,6 +78,24 @@ class YapiClient
         return $page;
     }
 
+    public static function checkPageName($page, Request $request)
+    {
+        $parent = $page->chapter()->first();
+        if ($parent instanceof Chapter && $parent->name != "发版变更脚本记录" && $parent->book->name == "发版变更脚本记录") {
+            $chapter_name = $parent->getOriginal("name");
+            $name = $request->name;
+            $regx = "/$chapter_name-[0-9]{8}-.*/";
+            $redirectLocation = $_SERVER["HTTP_REFERER"];
+            if (!preg_match("/$chapter_name-[0-9]{8}$/", $name) && !preg_match($regx, $name)) {
+                throw new NotifyException("名称 $name 不符合规范$regx", $redirectLocation);
+            }
+            $page = Page::visible()->where("name", "=", $name)->where("id", "!=", $page->id)->first();
+            if ($page) {
+                throw new NotifyException("页面 $name 已存在，请直接编辑", $redirectLocation);
+            }
+        }
+    }
+
     private function login()
     {
         $params = array(
@@ -92,7 +111,7 @@ class YapiClient
             return false;
         }
 
-        $url = env("YAPI_DOMAIN") . '/api/user/login_by_ldap';
+        $url = env("YAPI_DOMAIN") . '/api/user/login';
         $headers = array(
             'Accept'         => 'application/json',
             'Accept-Charset' => 'utf-8'

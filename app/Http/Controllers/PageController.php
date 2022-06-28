@@ -194,8 +194,6 @@ class PageController extends Controller
         $page = $this->pageRepo->getBySlug($bookSlug, $pageSlug);
         $this->checkOwnablePermission('page-update', $page);
 
-        \BookStack\Util\YapiClient::changePageName($page);
-
         $editorData = new PageEditorData($page, $this->pageRepo, $request->query('editor', ''));
         if ($editorData->getWarnings()) {
             $this->showWarningNotification(implode("\n", $editorData->getWarnings()));
@@ -220,6 +218,7 @@ class PageController extends Controller
         $page = $this->pageRepo->getBySlug($bookSlug, $pageSlug);
         $this->checkOwnablePermission('page-update', $page);
 
+        \BookStack\Util\YapiClient::checkPageName($page, $request);
         $this->pageRepo->update($page, $request->all());
 
         return redirect($page->getUrl());
