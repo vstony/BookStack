@@ -33,14 +33,7 @@ class YapiClient
 
     public static function changePageName($page)
     {
-        preg_match_all("/\[yapi_interface\](.*)\[\/yapi_interface\]/i", $page->html, $yapi);
-        if ($yapi && count($yapi) > 1) {
-            foreach ($yapi[1] as $interface_id) {
-                if (is_numeric($interface_id)) {
-                    Cache::put('yapi_interface_' . $interface_id, null, 3600 * 24);
-                }
-            }
-        }
+        YapiClient::clearYapiCache($page);
 
         if ($page->chapter_id > 0 && $page->book->name == "发版变更脚本记录") {
             $parent = $page->chapter()->first();
@@ -80,6 +73,8 @@ class YapiClient
 
     public static function checkPageName($page, Request $request)
     {
+        YapiClient::clearYapiCache($page);
+
         $parent = $page->chapter()->first();
         if ($parent instanceof Chapter && $parent->name != "发版变更脚本记录" && $parent->book->name == "发版变更脚本记录") {
             $chapter_name = $parent->getOriginal("name");
@@ -92,6 +87,18 @@ class YapiClient
             $page = Page::visible()->where("name", "=", $name)->where("id", "!=", $page->id)->first();
             if ($page) {
                 throw new NotifyException("页面 $name 已存在，请直接编辑", $redirectLocation);
+            }
+        }
+    }
+
+    private static function clearYapiCache($page)
+    {
+        preg_match_all("/\[yapi_interface\](.*)\[\/yapi_interface\]/i", $page->html, $yapi);
+        if ($yapi && count($yapi) > 1) {
+            foreach ($yapi[1] as $interface_id) {
+                if (is_numeric($interface_id)) {
+                    Cache::put('yapi_interface_' . $interface_id, null, 3600 * 24);
+                }
             }
         }
     }
@@ -226,17 +233,17 @@ class YapiClient
 
         //基本信息
         $html = "<h2 id='bkmrk-基本信息'>基本信息</h2>";
-        $html .= "<table width=98%><tr><td width=120px><b>接口名称：</b></td><td width=400px>"
-            . $api['title'] . "</td><td width=120px><b>状  态：</b></td><td>"
+        $html .= "<table width=100%><tr><td width=100px><b>接口名称：</b></td><td width=440px>"
+            . $api['title'] . "</td><td width=100px><b>状  态：</b></td><td>"
             . $status[$api['status']] . "</td></tr><td><b>接口路径：</b></td><td>"
-            . $project['basepath'] . $api['path'] . "</td><td><b>更新时间：</b></td><td>"
+            . "<span style='padding: 0 3px;background-color: #8be9fd'>$api[method]</span> " . $project['basepath'] . $api['path'] . "</td><td><b>更新时间：</b></td><td>"
             . date("Y-m-d H:i:s", $api['up_time'] + 8 * 3600) . "</td><tr></tr><tr><td><b>Mock地址：</b></td><td colspan='3'>"
             . env("YAPI_DOMAIN") . "/mock/$api[project_id]" . $project['basepath'] . $api['path'] . "</td></tr></table>";
 
         //请求参数
         $html .= "<h2 id='bkmrk-请求参数'>请求参数</h2>";
         $html .= "<h3 id='bkmrk-Headers'>Headers:</h3>";
-        $html .= "<table width=98%><tr style='font-weight: bold'><td>参数名称</td><td width='50%'>参数值</td><td>是否必填</td></tr>";
+        $html .= "<table width=100%><tr style='font-weight: bold'><td>参数名称</td><td width='50%'>参数值</td><td>是否必填</td></tr>";
         foreach ($api["req_headers"] as $req_headers) {
             $html .= "<tr><td>$req_headers[name]</td><td>$req_headers[value]</td><td>" . $required[$req_headers["required"]] . "</td></tr>";
         }
@@ -247,7 +254,7 @@ class YapiClient
         $request_json = json_decode($request, true);
 
         $indent = "";
-        $html .= "<table width=98% class='apitable'><tr style='font-weight: bold'><td>参数名称</td><td width=70px>类型</td><td width=45px>必填</td><td width=60px>默认值</td><td width=240px>备注</td><td width=130px>其他信息</td></tr>";
+        $html .= "<table width=100% class='apitable'><tr style='font-weight: bold'><td>参数名称</td><td width=70px>类型</td><td width=45px>必填</td><td width=60px>默认值</td><td width=240px>备注</td><td width=130px>其他信息</td></tr>";
         $toggleclass = 'reqtr';
         $trclass = 'reqtr';
         $html .= $this->echoYapiTable($request_json, $indent, $toggleclass, $trclass);
@@ -259,7 +266,7 @@ class YapiClient
         $response_json = json_decode($response, true);
 
         $indent = "";
-        $html .= "<table width=98% class='apitable'><tr style='font-weight: bold'><td>参数名称</td><td width=70px>类型</td><td width=45px>必填</td><td width=60px>默认值</td><td width=240px>备注</td><td width=130px>其他信息</td></tr>";
+        $html .= "<table width=100% class='apitable'><tr style='font-weight: bold'><td>参数名称</td><td width=70px>类型</td><td width=45px>必填</td><td width=60px>默认值</td><td width=240px>备注</td><td width=130px>其他信息</td></tr>";
         $toggleclass = 'resptr';
         $trclass = 'resptr';
         $html .= $this->echoYapiTable($response_json, $indent, $toggleclass, $trclass);
@@ -267,7 +274,7 @@ class YapiClient
 
         //备注
         $html .= "<h2 id='bkmrk-备注'>备注</h2>";
-        $html .= "<table width=98%><tr><td>" . $api['desc'] . "</td></tr></table>";
+        $html .= "<table width=100%><tr><td>" . $api['desc'] . "</td></tr></table>";
 
         //链接到yapi
         $html .= "<a href='" . env("YAPI_DOMAIN") . "/project/$api[project_id]/interface/api/$id' target='_blank' style='color: #f5f5f5'>api-id=$id</a>";
