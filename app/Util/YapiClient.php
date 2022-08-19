@@ -230,9 +230,7 @@ class YapiClient
         $logs = array();
         foreach ($log_list as $log) {
             if (isset($log['data'])) {
-                if ($log['data']['interface_id'] == $id) {
-                    $logs[] = $log;
-                }
+                $logs[] = $log;
             }
         }
 
@@ -244,6 +242,13 @@ class YapiClient
             "0" => "否",
             "1" => "是"
         );
+
+        if ($api['status'] <> "done") {
+            $html = "接口状态未完成<br/>";
+            //链接到yapi
+            $html .= "<a href='" . env("YAPI_DOMAIN") . "/project/$api[project_id]/interface/api/$id' target='_blank' style='color: #f5f5f5'>api-id=$id</a>";
+            return $html;
+        }
 
         //基本信息
         $html = "<h2 id='bkmrk-基本信息'>基本信息</h2>";
@@ -308,10 +313,12 @@ class YapiClient
                 unset($old_req_headers[$old_req_header_k]["_id"]);
             }
             $old_req_headers = json_encode($old_req_headers);
+            $old_req_body_type = isset($log["data"]["old"]["req_body_type"]) ? '{"req_body_type":"' . $log["data"]["old"]["req_body_type"] . '"}' : '{}';
+            $old_res_body_type = isset($log["data"]["old"]["res_body_type"]) ? '{"res_body_type":"' . $log["data"]["old"]["res_body_type"] . '"}' : '{}';
             $old_req_body = isset($log["data"]["old"]["req_body_other"]) && $log["data"]["old"]["req_body_other"] ? str_replace("'", "\'", $log["data"]["old"]["req_body_other"]) : "{}";
             $old_res_body = isset($log["data"]["old"]["res_body"]) && $log["data"]["old"]["res_body"] ? str_replace("'", "\'", $log["data"]["old"]["res_body"]) : "{}";
-            $old_req_body = str_replace('\"', '\\\"', $old_req_body);
-            $old_res_body = str_replace('\"', '\\\"', $old_res_body);
+            $old_req_body = $this->replace_chars($old_req_body);
+            $old_res_body = $this->replace_chars($old_res_body);
 
             $current_query_path = isset($log["data"]["current"]["query_path"]) && $log["data"]["current"]["query_path"] ? str_replace("'", "\'", json_encode($log["data"]["current"]["query_path"])) : "{}";
             $current_req_headers = isset($log["data"]["current"]["req_headers"]) && $log["data"]["current"]["req_headers"] ? $log["data"]["current"]["req_headers"] : array();
@@ -319,25 +326,33 @@ class YapiClient
                 unset($current_req_headers[$current_req_header_k]["_id"]);
             }
             $current_req_headers = json_encode($current_req_headers);
+            $current_req_body_type = isset($log["data"]["current"]["req_body_type"]) ? '{"req_body_type":"' . $log["data"]["current"]["req_body_type"] . '"}' : '{}';
+            $current_res_body_type = isset($log["data"]["current"]["res_body_type"]) ? '{"res_body_type":"' . $log["data"]["current"]["res_body_type"] . '"}' : '{}';
             $current_req_body = isset($log["data"]["current"]["req_body_other"]) && $log["data"]["current"]["req_body_other"] ? str_replace("'", "\'", $log["data"]["current"]["req_body_other"]) : "{}";
             $current_res_body = isset($log["data"]["current"]["res_body"]) && $log["data"]["current"]["res_body"] ? str_replace("'", "\'", $log["data"]["current"]["res_body"]) : "{}";
-            $current_req_body = str_replace('\"', '\\\"', $current_req_body);
-            $current_res_body = str_replace('\"', '\\\"', $current_res_body);
+            $current_req_body = $this->replace_chars($current_req_body);
+            $current_res_body = $this->replace_chars($current_res_body);
 
-            if ($old_req_body == $current_req_body && $old_res_body == $current_res_body) {
+            if ($old_req_body == $current_req_body && $old_res_body == $current_res_body
+                && $old_req_body_type == $current_req_body_type && $old_res_body_type == $current_res_body_type
+                && $old_req_headers == $current_req_headers && $old_query_path == $current_query_path) {
                 continue;
             }
 
-            $html .= "<tr><td>$add_time</td><td><span id='report_$key'></span><script>$(document).ready(function(){ 
-                $('#report_$key').append(jdd.compareJson('$old_query_path','$current_query_path','<span style=\'cursor:pointer;background-color: #F4A460\' onclick=\'javascipt:$(\"#form_qrp_$key\").submit();\'>请求路径</span>：'));
-                $('#report_$key').append(jdd.compareJson('$old_req_headers','$current_req_headers','<span style=\'cursor:pointer;background-color: #AFEEEE\' onclick=\'javascipt:$(\"#form_rhd_$key\").submit();\'>请求头部</span>：'));
-                $('#report_$key').append(jdd.compareJson('$old_req_body','$current_req_body','<span style=\'cursor:pointer;background-color: #7FFF00\' onclick=\'javascipt:$(\"#form_req_$key\").submit();\'>请求报文</span>：'));
-                $('#report_$key').append(jdd.compareJson('$old_res_body','$current_res_body','<span style=\'cursor:pointer;background-color: #EEE8AA\' onclick=\'javascipt:$(\"#form_res_$key\").submit();\'>返回报文</span>：'));
+            $html .= "<tr><td>$add_time</td><td><span id='report_$log[_id]'></span><script>$(document).ready(function(){ 
+                $('#report_$log[_id]').append(jdd.compareJson('$old_query_path',   '$current_query_path',   '<span style=\'cursor:pointer;background-color: #F4A460\' onclick=\'javascipt:$(\"#form_qrp_$log[_id]\").submit();\'>请求路径</span>：'));
+                $('#report_$log[_id]').append(jdd.compareJson('$old_req_headers',  '$current_req_headers',  '<span style=\'cursor:pointer;background-color: #AFEEEE\' onclick=\'javascipt:$(\"#form_rhd_$log[_id]\").submit();\'>请求头部</span>：'));
+                $('#report_$log[_id]').append(jdd.compareJson('$old_req_body_type','$current_req_body_type','<span style=\'cursor:pointer;background-color: #CCDDFF\' onclick=\'javascipt:$(\"#form_rbt_$log[_id]\").submit();\'>请求类型</span>：'));
+                $('#report_$log[_id]').append(jdd.compareJson('$old_res_body_type','$current_res_body_type','<span style=\'cursor:pointer;background-color: #00FFCC\' onclick=\'javascipt:$(\"#form_sbt_$log[_id]\").submit();\'>返回类型</span>：'));
+                $('#report_$log[_id]').append(jdd.compareJson('$old_req_body',     '$current_req_body',     '<span style=\'cursor:pointer;background-color: #7FFF00\' onclick=\'javascipt:$(\"#form_req_$log[_id]\").submit();\'>请求报文</span>：'));
+                $('#report_$log[_id]').append(jdd.compareJson('$old_res_body',     '$current_res_body',     '<span style=\'cursor:pointer;background-color: #EEE8AA\' onclick=\'javascipt:$(\"#form_res_$log[_id]\").submit();\'>返回报文</span>：'));
             });</script>
-            <form id='form_qrp_$key' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_query_path</textarea><textarea style='display: none' name='right'>$current_query_path</textarea></form>
-            <form id='form_rhd_$key' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_req_headers</textarea><textarea style='display: none' name='right'>$current_req_headers</textarea></form>
-            <form id='form_req_$key' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_req_body</textarea><textarea style='display: none' name='right'>$current_req_body</textarea></form>
-            <form id='form_res_$key' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_res_body</textarea><textarea style='display: none' name='right'>$current_res_body</textarea></form>
+            <form id='form_qrp_$log[_id]' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_query_path   </textarea><textarea style='display: none' name='right'>$current_query_path   </textarea></form>
+            <form id='form_rhd_$log[_id]' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_req_headers  </textarea><textarea style='display: none' name='right'>$current_req_headers  </textarea></form>
+            <form id='form_rbt_$log[_id]' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_req_body_type</textarea><textarea style='display: none' name='right'>$current_req_body_type</textarea></form>
+            <form id='form_sbt_$log[_id]' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_res_body_type</textarea><textarea style='display: none' name='right'>$current_res_body_type</textarea></form>
+            <form id='form_req_$log[_id]' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_req_body     </textarea><textarea style='display: none' name='right'>$current_req_body     </textarea></form>
+            <form id='form_res_$log[_id]' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_res_body     </textarea><textarea style='display: none' name='right'>$current_res_body     </textarea></form>
             </td></tr>";
         }
         $html .= "</table>";
@@ -350,6 +365,18 @@ class YapiClient
         }
 
         return $html;
+    }
+
+    private function replace_chars($string)
+    {
+        $string = str_replace('\"', '\\\"', $string);
+        $string = str_replace("\r", '', $string);
+        $string = str_replace("\n", '', $string);
+        $string = str_replace("\t", '', $string);
+        $string = str_replace('\r', '', $string);
+        $string = str_replace('\n', '', $string);
+        $string = str_replace('\t', '', $string);
+        return str_replace(chr(9), '', $string);
     }
 
     private function getStyleScript()
