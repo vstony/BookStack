@@ -161,7 +161,7 @@ class YapiClient
             }
             $html .= "<td>" . (array_key_exists("type", $property) ? $property['type'] : "") . "</td>";
             $html .= "<td>" . (array_key_exists("required", $api) ? $bool[in_array($key, $api['required'])] : $bool[0]) . "</td>";
-            $html .= "<td>" . (array_key_exists("default", $property) ? $property['default'] : "") . "</td>";
+            $html .= "<td style='font-size: 8px'>" . (array_key_exists("default", $property) ? $property['default'] : "") . "</td>";
             $html .= "<td style='font-size: 8px'>" . (array_key_exists("description", $property) ? $this->processBreakLine($property['description']) : "") . "</td>";
             $html .= "<td style='font-size: 8px'>";
             $html .= array_key_exists("maxLength", $property) && $property['maxLength'] ? "最大长度：" . $property['maxLength'] . "<br/>" : "";
@@ -222,6 +222,20 @@ class YapiClient
         $json = json_decode($response->getBody()->getContents(), true);
         $project = $json['data'];
 
+        //获取变更历史
+        $url = env("YAPI_DOMAIN") . '/api/log/list?typeid=' . $api['project_id'] . '&type=project&selectValue=' . $id . '&page=1&limit=1000';
+        $response = $this->client->request('GET', $url, $options);
+        $json = json_decode($response->getBody()->getContents(), true);
+        $log_list = $json['data']['list'];
+        $logs = array();
+        foreach ($log_list as $log) {
+            if (isset($log['data'])) {
+                if ($log['data']['interface_id'] == $id) {
+                    $logs[] = $log;
+                }
+            }
+        }
+
         $status = array(
             "done"   => "已完成",
             "undone" => "未完成"
@@ -275,6 +289,58 @@ class YapiClient
         //备注
         $html .= "<h2 id='bkmrk-备注'>备注</h2>";
         $html .= "<table width=100%><tr><td>" . $api['desc'] . "</td></tr></table>";
+
+        //变更历史
+        $html .= "<h2 id='bkmrk-变更历史'>变更历史</h2>";
+        $html .= "
+        <script src=\"/jsondiff/jquery.min.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
+        <script src=\"/jsondiff/jsl.format.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
+        <script src=\"/jsondiff/jsl.parser.js\" type=\"text/javascript\" charset=\"utf-8\"></script>
+        <script src=\"/jsondiff/jdd.js\" type=\"text/javascript\" charset=\"utf-8\"></script>";
+        $html .= "<table width=100%><tr><td width='100px'>变更日期</td><td>变更内容</td></tr>";
+        foreach ($logs as $key => $log) {
+            $add_time = date("Y-m-d", $log['add_time']);
+            //$content = strip_tags($log["content"]);
+
+            $old_query_path = isset($log["data"]["old"]["query_path"]) && $log["data"]["old"]["query_path"] ? str_replace("'", "\'", json_encode($log["data"]["old"]["query_path"])) : "{}";
+            $old_req_headers = isset($log["data"]["old"]["req_headers"]) && $log["data"]["old"]["req_headers"] ? $log["data"]["old"]["req_headers"] : array();
+            foreach ($old_req_headers as $old_req_header_k => $old_req_header) {
+                unset($old_req_headers[$old_req_header_k]["_id"]);
+            }
+            $old_req_headers = json_encode($old_req_headers);
+            $old_req_body = isset($log["data"]["old"]["req_body_other"]) && $log["data"]["old"]["req_body_other"] ? str_replace("'", "\'", $log["data"]["old"]["req_body_other"]) : "{}";
+            $old_res_body = isset($log["data"]["old"]["res_body"]) && $log["data"]["old"]["res_body"] ? str_replace("'", "\'", $log["data"]["old"]["res_body"]) : "{}";
+            $old_req_body = str_replace('\"', '\\\"', $old_req_body);
+            $old_res_body = str_replace('\"', '\\\"', $old_res_body);
+
+            $current_query_path = isset($log["data"]["current"]["query_path"]) && $log["data"]["current"]["query_path"] ? str_replace("'", "\'", json_encode($log["data"]["current"]["query_path"])) : "{}";
+            $current_req_headers = isset($log["data"]["current"]["req_headers"]) && $log["data"]["current"]["req_headers"] ? $log["data"]["current"]["req_headers"] : array();
+            foreach ($current_req_headers as $current_req_header_k => $current_req_header) {
+                unset($current_req_headers[$current_req_header_k]["_id"]);
+            }
+            $current_req_headers = json_encode($current_req_headers);
+            $current_req_body = isset($log["data"]["current"]["req_body_other"]) && $log["data"]["current"]["req_body_other"] ? str_replace("'", "\'", $log["data"]["current"]["req_body_other"]) : "{}";
+            $current_res_body = isset($log["data"]["current"]["res_body"]) && $log["data"]["current"]["res_body"] ? str_replace("'", "\'", $log["data"]["current"]["res_body"]) : "{}";
+            $current_req_body = str_replace('\"', '\\\"', $current_req_body);
+            $current_res_body = str_replace('\"', '\\\"', $current_res_body);
+
+            if ($old_req_body == $current_req_body && $old_res_body == $current_res_body) {
+                continue;
+            }
+
+            $html .= "<tr><td>$add_time</td><td><span id='report_$key'></span><script>$(document).ready(function(){ 
+                $('#report_$key').append(jdd.compareJson('$old_query_path','$current_query_path','<span style=\'cursor:pointer;background-color: #F4A460\' onclick=\'javascipt:$(\"#form_qrp_$key\").submit();\'>请求路径</span>：'));
+                $('#report_$key').append(jdd.compareJson('$old_req_headers','$current_req_headers','<span style=\'cursor:pointer;background-color: #AFEEEE\' onclick=\'javascipt:$(\"#form_rhd_$key\").submit();\'>请求头部</span>：'));
+                $('#report_$key').append(jdd.compareJson('$old_req_body','$current_req_body','<span style=\'cursor:pointer;background-color: #7FFF00\' onclick=\'javascipt:$(\"#form_req_$key\").submit();\'>请求报文</span>：'));
+                $('#report_$key').append(jdd.compareJson('$old_res_body','$current_res_body','<span style=\'cursor:pointer;background-color: #EEE8AA\' onclick=\'javascipt:$(\"#form_res_$key\").submit();\'>返回报文</span>：'));
+            });</script>
+            <form id='form_qrp_$key' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_query_path</textarea><textarea style='display: none' name='right'>$current_query_path</textarea></form>
+            <form id='form_rhd_$key' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_req_headers</textarea><textarea style='display: none' name='right'>$current_req_headers</textarea></form>
+            <form id='form_req_$key' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_req_body</textarea><textarea style='display: none' name='right'>$current_req_body</textarea></form>
+            <form id='form_res_$key' action='/jsondiff/index.php' target='_blank' method='post'><textarea style='display: none' name='left'>$old_res_body</textarea><textarea style='display: none' name='right'>$current_res_body</textarea></form>
+            </td></tr>";
+        }
+        $html .= "</table>";
 
         //链接到yapi
         $html .= "<a href='" . env("YAPI_DOMAIN") . "/project/$api[project_id]/interface/api/$id' target='_blank' style='color: #f5f5f5'>api-id=$id</a>";
