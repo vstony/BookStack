@@ -370,12 +370,14 @@ class YapiClient
     private function replace_chars($string)
     {
         $string = str_replace('\"', '\\\"', $string);
+        $string = str_replace('\d', '', $string);
         $string = str_replace("\r", '', $string);
         $string = str_replace("\n", '', $string);
         $string = str_replace("\t", '', $string);
         $string = str_replace('\r', '', $string);
         $string = str_replace('\n', '', $string);
         $string = str_replace('\t', '', $string);
+        $string = str_replace('\\APP', '/APP', $string);
         return str_replace(chr(9), '', $string);
     }
 

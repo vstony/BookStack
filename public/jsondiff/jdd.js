@@ -1057,7 +1057,12 @@ var jdd = {
         var leftValid = jdd.validateInput(jsonLeft, jdd.LEFT);
         var rightValid = jdd.validateInput(jsonRight, jdd.RIGHT);
 
-        if (!leftValid || !rightValid) {
+        if (!leftValid) {
+            console.log(jsonLeft);
+            return;
+        }
+        if (!rightValid) {
+            console.log(jsonRight);
             return;
         }
 
