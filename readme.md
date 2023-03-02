@@ -45,15 +45,21 @@ Note: Listed services are not tested, vetted nor supported by the official BookS
     <img width="400" src="https://media.githubusercontent.com/media/BookStackApp/website/main/static/images/sponsors/diagramsnet.png" alt="Diagrams.net">
 </a></td>
 <td><a href="https://cloudabove.com/hosting" target="_blank">
-    <img height="100" src="https://raw.githubusercontent.com/BookStackApp/website/main/static/images/sponsors/cloudabove.svg" alt="Cloudabove">
+    <img height="100" src="https://media.githubusercontent.com/media/BookStackApp/website/main/static/images/sponsors/cloudabove.png" alt="Cloudabove">
 </a></td>
 </tr></tbody></table>
 
-#### Bronze Sponsor
+#### Bronze Sponsors
 
 <table><tbody><tr>
 <td><a href="https://www.stellarhosted.com/bookstack/" target="_blank">
-    <img width="280" src="https://media.githubusercontent.com/media/BookStackApp/website/main/static/images/sponsors/stellarhosted.png" alt="Stellar Hosted">
+    <img width="240" src="https://media.githubusercontent.com/media/BookStackApp/website/main/static/images/sponsors/stellarhosted.png" alt="Stellar Hosted">
+</a></td>
+<td><a href="https://www.practicali.be" target="_blank">
+    <img width="240" src="https://media.githubusercontent.com/media/BookStackApp/website/main/static/images/sponsors/practicali.png" alt="Practicali">
+</a></td>
+<td><a href="https://torutec.com/" target="_blank">
+    <img width="240" src="https://media.githubusercontent.com/media/BookStackApp/website/main/static/images/sponsors/torutec.png" alt="Torutec">
 </a></td>
 </tr></tbody></table>
 
