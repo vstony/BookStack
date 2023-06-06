@@ -45,15 +45,15 @@ return [
     'cannot_create_thumbs' => 'Serveris nevar izveidot samazinātus attēlus. Lūdzu pārbaudiet, vai ir uzstādīts PHP GD paplašinājums.',
     'server_upload_limit' => 'Serveris neatļauj šāda izmēra failu ielādi. Lūdzu mēģiniet mazāka izmēra failu.',
     'uploaded'  => 'Serveris neatļauj šāda izmēra failu ielādi. Lūdzu mēģiniet mazāka izmēra failu.',
-    'file_upload_timeout' => 'Faila augšupielādē ir iestājies noilgums.',
 
     // Drawing & Images
     'image_upload_error' => 'Radās kļūda augšupielādējot attēlu',
     'image_upload_type_error' => 'Ielādējamā attēla tips nav derīgs',
-    'drawing_data_not_found' => 'Drawing data could not be loaded. The drawing file might no longer exist or you may not have permission to access it.',
+    'drawing_data_not_found' => 'Attēla datus nevarēja ielādēt. Attēla fails, iespējams, vairs neeksistē, vai arī jums varētu nebūt piekļuves tiesības tam.',
 
     // Attachments
     'attachment_not_found' => 'Pielikums nav atrasts',
+    'attachment_upload_error' => 'An error occurred uploading the attachment file',
 
     // Pages
     'page_draft_autosave_fail' => 'Neizdevās saglabāt uzmetumu. Pārliecinieties, ka jūsu interneta pieslēgums ir aktīvs pirms saglabājiet šo lapu',
@@ -61,7 +61,7 @@ return [
 
     // Entities
     'entity_not_found' => 'Vienība nav atrasta',
-    'bookshelf_not_found' => 'Shelf not found',
+    'bookshelf_not_found' => 'Plaukts nav atrasts',
     'book_not_found' => 'Grāmata nav atrasta',
     'page_not_found' => 'Lapa nav atrasta',
     'chapter_not_found' => 'Nodaļa nav atrasta',

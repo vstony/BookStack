@@ -6,6 +6,9 @@ return [
 
     // Image Manager
     'image_select' => '画像を選択',
+    'image_upload' => '画像をアップロード',
+    'image_intro' => 'ここでは、システムに以前アップロードされた画像を選択して管理できます。',
+    'image_intro_upload' => 'このウィンドウに画像ファイルをドラッグするか、上の「画像をアップロード」ボタンを使用して新しい画像をアップロードします。',
     'image_all' => 'すべて',
     'image_all_title' => '全ての画像を表示',
     'image_book_title' => 'このブックにアップロードされた画像を表示',
@@ -18,12 +21,12 @@ return [
     'image_delete_confirm_text' => 'この画像を削除してもよろしいですか？',
     'image_select_image' => '画像を選択',
     'image_dropzone' => '画像をドロップするか、クリックしてアップロード',
+    'image_dropzone_drop' => 'アップロードする画像をここにドロップ',
     'images_deleted' => '画像を削除しました',
     'image_preview' => '画像プレビュー',
     'image_upload_success' => '画像がアップロードされました',
     'image_update_success' => '画像が更新されました',
     'image_delete_success' => '画像が削除されました',
-    'image_upload_remove' => '削除',
 
     // Code Editor
     'code_editor' => 'コードを編集する',

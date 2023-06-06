@@ -6,6 +6,9 @@ return [
 
     // Image Manager
     'image_select' => 'Selecteer Afbeelding',
+    'image_upload' => 'Upload afbeelding',
+    'image_intro' => 'Hier kan je eerder geüploade afbeeldingen selecteren en beheren.',
+    'image_intro_upload' => 'Sleep een afbeeldingsbestand naar dit venster of gebruik de "Upload afbeelding"-knop om een afbeelding te uploaden.',
     'image_all' => 'Alles',
     'image_all_title' => 'Alle afbeeldingen weergeven',
     'image_book_title' => 'Bekijk afbeeldingen die naar dit boek zijn geüpload',
@@ -18,12 +21,12 @@ return [
     'image_delete_confirm_text' => 'Weet u zeker dat u deze afbeelding wilt verwijderen?',
     'image_select_image' => 'Kies afbeelding',
     'image_dropzone' => 'Sleep afbeeldingen naar hier of klik hier om te uploaden',
+    'image_dropzone_drop' => 'Sleep hier de afbeeldingen naar toe',
     'images_deleted' => 'Afbeeldingen verwijderd',
     'image_preview' => 'Afbeelding voorbeeld',
     'image_upload_success' => 'Afbeelding succesvol geüpload',
     'image_update_success' => 'Afbeeldingsdetails succesvol bijgewerkt',
     'image_delete_success' => 'Afbeelding succesvol verwijderd',
-    'image_upload_remove' => 'Verwijder',
 
     // Code Editor
     'code_editor' => 'Bewerk Code',

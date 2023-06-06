@@ -45,15 +45,15 @@ return [
     'cannot_create_thumbs' => 'Der Server kann keine Vorschau-Bilder erzeugen. Bitte prüfe, ob die GD PHP-Erweiterung installiert ist.',
     'server_upload_limit' => 'Der Server verbietet das Hochladen von Dateien mit dieser Dateigröße. Bitte versuche es mit einer kleineren Datei.',
     'uploaded'  => 'Der Server verbietet das Hochladen von Dateien mit dieser Dateigröße. Bitte versuche es mit einer kleineren Datei.',
-    'file_upload_timeout' => 'Der Upload der Datei ist abgelaufen.',
 
     // Drawing & Images
     'image_upload_error' => 'Beim Hochladen des Bildes trat ein Fehler auf.',
     'image_upload_type_error' => 'Der Bildtyp der hochgeladenen Datei ist ungültig.',
-    'drawing_data_not_found' => 'Zeichnungsdaten konnten nicht geladen werden. Die Zeichnungsdatei existiert möglicherweise nicht mehr oder Sie haben nicht die Berechtigung, darauf zuzugreifen.',
+    'drawing_data_not_found' => 'Zeichnungsdaten konnten nicht geladen werden. Die Zeichnungsdatei existiert möglicherweise nicht mehr oder du hast nicht die Berechtigung, darauf zuzugreifen.',
 
     // Attachments
     'attachment_not_found' => 'Anhang konnte nicht gefunden werden.',
+    'attachment_upload_error' => 'Beim Hochladen des Anhangs trat ein Fehler auf',
 
     // Pages
     'page_draft_autosave_fail' => 'Fehler beim Speichern des Entwurfs. Stelle sicher, dass du mit dem Internet verbunden bist, bevor du den Entwurf dieser Seite speicherst.',

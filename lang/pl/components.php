@@ -6,6 +6,9 @@ return [
 
     // Image Manager
     'image_select' => 'Wybór obrazka',
+    'image_upload' => 'Prześlij obraz',
+    'image_intro' => 'Tutaj możesz wybrać i zarządzać obrazami, które zostały wcześniej przesłane do systemu.',
+    'image_intro_upload' => 'Prześlij nowy obraz przeciągając plik obrazu do tego okna lub używając przycisku "Prześlij obraz" powyżej.',
     'image_all' => 'Wszystkie',
     'image_all_title' => 'Zobacz wszystkie obrazki',
     'image_book_title' => 'Zobacz obrazki zapisane w tej książce',
@@ -18,12 +21,12 @@ return [
     'image_delete_confirm_text' => 'Czy na pewno chcesz usunąć ten obraz?',
     'image_select_image' => 'Wybierz obrazek',
     'image_dropzone' => 'Upuść obrazki tutaj lub kliknij by wybrać obrazki do przesłania',
+    'image_dropzone_drop' => 'Upuść obrazy tutaj, aby przesłać',
     'images_deleted' => 'Usunięte obrazki',
     'image_preview' => 'Podgląd obrazka',
     'image_upload_success' => 'Obrazek przesłany pomyślnie',
     'image_update_success' => 'Szczegóły obrazka zaktualizowane pomyślnie',
     'image_delete_success' => 'Obrazek usunięty pomyślnie',
-    'image_upload_remove' => 'Usuń',
 
     // Code Editor
     'code_editor' => 'Edytuj kod',

@@ -145,6 +145,7 @@ class UserManagementTest extends TestCase
 
         $resp = $this->asEditor()->get("settings/users/{$editor->id}/delete");
         $resp->assertSee('Migrate Ownership');
+        $this->withHtml($resp)->assertElementExists('form input[name="new_owner_id"]');
         $resp->assertSee('new_owner_id');
     }
 
@@ -159,6 +160,16 @@ class UserManagementTest extends TestCase
             'id'       => $page->id,
             'owned_by' => $newOwner->id,
         ]);
+    }
+
+    public function test_delete_with_empty_owner_migration_id_works()
+    {
+        $user = $this->users->editor();
+
+        $resp = $this->asAdmin()->delete("settings/users/{$user->id}", ['new_owner_id' => '']);
+        $resp->assertRedirect('/settings/users');
+        $this->assertActivityExists(ActivityType::USER_DELETE);
+        $this->assertSessionHas('success');
     }
 
     public function test_delete_removes_user_preferences()

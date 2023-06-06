@@ -23,10 +23,10 @@ return [
     'saml_no_email_address' => 'Denne kontoinformasjonen finnes ikke i det eksterne autentiseringssystemet.',
     'saml_invalid_response_id' => 'Forespørselen fra det eksterne autentiseringssystemet gjenkjennes ikke av en prosess som startes av dette programmet. Å navigere tilbake etter pålogging kan forårsake dette problemet.',
     'saml_fail_authed' => 'Innlogging gjennom :system feilet. Fikk ikke kontakt med autentiseringstjeneren.',
-    'oidc_already_logged_in' => 'Already logged in',
-    'oidc_user_not_registered' => 'The user :name is not registered and automatic registration is disabled',
-    'oidc_no_email_address' => 'Could not find an email address, for this user, in the data provided by the external authentication system',
-    'oidc_fail_authed' => 'Login using :system failed, system did not provide successful authorization',
+    'oidc_already_logged_in' => 'Allerede logget inn',
+    'oidc_user_not_registered' => 'Brukeren :name er ikke registrert og automatisk registrering er deaktivert',
+    'oidc_no_email_address' => 'Finner ikke en e-postadresse, for denne brukeren, i dataene som leveres av det eksterne autentiseringssystemet',
+    'oidc_fail_authed' => 'Innlogging ved hjelp av :system feilet, systemet ga ikke vellykket godkjenning',
     'social_no_action_defined' => 'Ingen handlinger er definert',
     'social_login_bad_response' => "Feilmelding mottat fra :socialAccount innloggingstjeneste: \n:error",
     'social_account_in_use' => 'Denne :socialAccount kontoen er allerede registrert, Prøv å logge inn med :socialAccount alternativet.',
@@ -45,15 +45,15 @@ return [
     'cannot_create_thumbs' => 'Kan ikke opprette miniatyrbilder. GD PHP er ikke installert.',
     'server_upload_limit' => 'Vedlegget er for stort, forsøk med et mindre vedlegg.',
     'uploaded'  => 'Tjenesten aksepterer ikke vedlegg som er så stor.',
-    'file_upload_timeout' => 'Opplastingen gikk ut på tid.',
 
     // Drawing & Images
     'image_upload_error' => 'Bildet kunne ikke lastes opp, forsøk igjen.',
     'image_upload_type_error' => 'Bildeformatet støttes ikke, forsøk med et annet format.',
-    'drawing_data_not_found' => 'Drawing data could not be loaded. The drawing file might no longer exist or you may not have permission to access it.',
+    'drawing_data_not_found' => 'Tegningsdata kunne ikke lastes. Det er mulig at tegningsfilen ikke finnes lenger, eller du har ikke rettigheter til å få tilgang til den.',
 
     // Attachments
     'attachment_not_found' => 'Vedlegget ble ikke funnet',
+    'attachment_upload_error' => 'An error occurred uploading the attachment file',
 
     // Pages
     'page_draft_autosave_fail' => 'Kunne ikke lagre utkastet, forsikre deg om at du er tilkoblet tjeneren (Har du nettilgang?)',
@@ -61,7 +61,7 @@ return [
 
     // Entities
     'entity_not_found' => 'Entitet ble ikke funnet',
-    'bookshelf_not_found' => 'Shelf not found',
+    'bookshelf_not_found' => 'Bokhyllen ble ikke funnet',
     'book_not_found' => 'Boken ble ikke funnet',
     'page_not_found' => 'Siden ble ikke funnet',
     'chapter_not_found' => 'Kapittel ble ikke funnet',

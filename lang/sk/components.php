@@ -6,6 +6,9 @@ return [
 
     // Image Manager
     'image_select' => 'Vybrať obrázok',
+    'image_upload' => 'Nahrať obrázok',
+    'image_intro' => 'Tu môžete vybrať a spravovať obrázky, ktoré boli predtým nahrané do systému.',
+    'image_intro_upload' => 'Nahrajte nový obrázok pretiahnutím súboru obrázka do tohto okna alebo pomocou vyššie uvedeného tlačidla „Nahrať obrázok“.',
     'image_all' => 'Všetko',
     'image_all_title' => 'Zobraziť všetky obrázky',
     'image_book_title' => 'Zobraziť obrázky nahrané do tejto knihy',
@@ -18,12 +21,12 @@ return [
     'image_delete_confirm_text' => 'Naozaj chcete vymazať tento obrázok?',
     'image_select_image' => 'Vybrať obrázok',
     'image_dropzone' => 'Presuňte obrázky sem alebo kliknite sem pre nahranie',
+    'image_dropzone_drop' => 'Sem presuňte obrázky, ktoré chcete nahrať',
     'images_deleted' => 'Obrázky zmazané',
     'image_preview' => 'Náhľad obrázka',
     'image_upload_success' => 'Obrázok úspešne nahraný',
     'image_update_success' => 'Detaily obrázka úspešne aktualizované',
     'image_delete_success' => 'Obrázok úspešne zmazaný',
-    'image_upload_remove' => 'Odstrániť',
 
     // Code Editor
     'code_editor' => 'Upraviť kód',
