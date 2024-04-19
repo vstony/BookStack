@@ -6,6 +6,7 @@ return [
 
     // Buttons
     'cancel' => 'ביטול',
+    'close' => 'סגור',
     'confirm' => 'אישור',
     'back' => 'אחורה',
     'save' => 'שמור',
@@ -19,7 +20,7 @@ return [
     'description' => 'תיאור',
     'role' => 'תפקיד',
     'cover_image' => 'תמונת נושא',
-    'cover_image_description' => 'התמונה צריכה להיות בסביבות 440x250px',
+    'cover_image_description' => 'This image should be approximately 440x250px although it will be flexibly scaled & cropped to fit the user interface in different scenarios as required, so actual dimensions for display will differ.',
 
     // Actions
     'actions' => 'פעולות',
@@ -41,6 +42,7 @@ return [
     'remove' => 'הסר',
     'add' => 'הוסף',
     'configure' => 'הגדרות',
+    'manage' => 'נהל',
     'fullscreen' => 'מסך מלא',
     'favourite' => 'מועדף',
     'unfavourite' => 'בטל מועדף',
@@ -50,6 +52,7 @@ return [
     'filter_clear' => 'נקה מסננים',
     'download' => 'הורדה',
     'open_in_tab' => 'פתח בכרטיסייה חדשה',
+    'open' => 'Open',
 
     // Sort Options
     'sort_options' => 'אפשרויות מיון',

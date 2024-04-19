@@ -3,7 +3,7 @@ import {scrollAndHighlightElement} from '../services/util';
 import {Component} from './component';
 
 function toggleAnchorHighlighting(elementId, shouldHighlight) {
-    DOM.forEach(`a[href="#${elementId}"]`, anchor => {
+    DOM.forEach(`#page-navigation a[href="#${elementId}"]`, anchor => {
         anchor.closest('li').classList.toggle('current-heading', shouldHighlight);
     });
 }
@@ -37,7 +37,6 @@ export class PageDisplay extends Component {
 
         window.importVersioned('code').then(Code => Code.highlight());
         this.setupNavHighlighting();
-        this.setupDetailsCodeBlockRefresh();
 
         // Check the hash on load
         if (window.location.hash) {
@@ -85,16 +84,6 @@ export class PageDisplay extends Component {
         if (headings.length > 0 && pageNav !== null) {
             addNavObserver(headings);
         }
-    }
-
-    setupDetailsCodeBlockRefresh() {
-        const onToggle = event => {
-            const codeMirrors = [...event.target.querySelectorAll('.CodeMirror')];
-            codeMirrors.forEach(cm => cm.CodeMirror && cm.CodeMirror.refresh());
-        };
-
-        const details = [...this.container.querySelectorAll('details')];
-        details.forEach(detail => detail.addEventListener('toggle', onToggle));
     }
 
 }

@@ -10,6 +10,7 @@ return [
 
     // Auth
     'error_user_exists_different_creds' => 'Um usuário com o e-mail :email já existe mas com credenciais diferentes.',
+    'auth_pre_register_theme_prevention' => 'User account could not be registered for the provided details',
     'email_already_confirmed' => 'E-mail já foi confirmado. Tente efetuar o login.',
     'email_confirmation_invalid' => 'Esse token de confirmação não é válido ou já foi utilizado. Por favor, tente cadastrar-se novamente.',
     'email_confirmation_expired' => 'O token de confirmação já expirou. Um novo e-mail foi enviado.',
@@ -19,12 +20,10 @@ return [
     'ldap_extension_not_installed' => 'A extensão LDAP PHP não está instalada',
     'ldap_cannot_connect' => 'Não foi possível conectar ao servidor LDAP. Conexão inicial falhou',
     'saml_already_logged_in' => 'Login já efetuado',
-    'saml_user_not_registered' => 'O usuário :name não está cadastrado e o cadastro automático está desativado',
     'saml_no_email_address' => 'Não foi possível encontrar um endereço de e-mail para este usuário nos dados providos pelo sistema de autenticação externa',
     'saml_invalid_response_id' => 'A requisição do sistema de autenticação externa não foi reconhecia por um processo iniciado por esta aplicação. Após o login, navegar para o caminho anterior pode causar um problema.',
     'saml_fail_authed' => 'Login utilizando :system falhou. Sistema não forneceu autorização bem sucedida',
     'oidc_already_logged_in' => 'Já está logado',
-    'oidc_user_not_registered' => 'O usuário :name não está registrado e o registro automático está desativado',
     'oidc_no_email_address' => 'Não foi possível encontrar um endereço de e-mail para este usuário, nos dados fornecidos pelo sistema de autenticação externa',
     'oidc_fail_authed' => 'Login usando :system falhou, o sistema não forneceu autorização com sucesso',
     'social_no_action_defined' => 'Nenhuma ação definida',
@@ -44,11 +43,16 @@ return [
     'cannot_get_image_from_url' => 'Não foi possível obter a imagem a partir de :url',
     'cannot_create_thumbs' => 'O servidor não pôde criar as miniaturas de imagem. Por favor, verifique se a extensão GD PHP está instalada.',
     'server_upload_limit' => 'O servidor não permite o upload de arquivos com esse tamanho. Por favor, tente fazer o upload de arquivos de menor tamanho.',
+    'server_post_limit' => 'O servidor não pode receber a quantidade de dados fornecida. Tente novamente com menos dados ou um arquivo menor.',
     'uploaded'  => 'O servidor não permite o upload de arquivos com esse tamanho. Por favor, tente fazer o upload de arquivos de menor tamanho.',
 
     // Drawing & Images
     'image_upload_error' => 'Um erro aconteceu enquanto o servidor tentava efetuar o upload da imagem',
     'image_upload_type_error' => 'O tipo de imagem que está sendo enviada é inválido',
+    'image_upload_replace_type' => 'Substituições de arquivos de imagem devem ser do mesmo tipo',
+    'image_upload_memory_limit' => 'Falha ao processar o upload de imagem e/ou criar miniaturas devido a limites de recursos do sistema.',
+    'image_thumbnail_memory_limit' => 'Falha ao criar variações de tamanho da imagem devido a limites de recursos do sistema.',
+    'image_gallery_thumbnail_memory_limit' => 'Falha ao criar miniaturas da galeria devido a limites de recursos do sistema.',
     'drawing_data_not_found' => 'Dados de desenho não puderam ser carregados. Talvez o arquivo de desenho não exista mais ou você não tenha permissão para acessá-lo.',
 
     // Attachments
@@ -57,6 +61,7 @@ return [
 
     // Pages
     'page_draft_autosave_fail' => 'Falha ao tentar salvar o rascunho. Certifique-se que a conexão de internet está funcional antes de tentar salvar essa página',
+    'page_draft_delete_fail' => 'Falha ao excluir o rascunho da página e buscar conteúdo salvo na página atual',
     'page_custom_home_deletion' => 'Não é possível excluir uma página que está definida como página inicial',
 
     // Entities
@@ -109,4 +114,6 @@ return [
     // Settings & Maintenance
     'maintenance_test_email_failure' => 'Erro encontrado ao enviar um e-mail de teste:',
 
+    // HTTP errors
+    'http_ssr_url_no_match' => 'A URL não corresponde aos hosts SSR configurados como permitidos',
 ];

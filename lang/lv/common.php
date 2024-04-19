@@ -6,6 +6,7 @@ return [
 
     // Buttons
     'cancel' => 'Atcelt',
+    'close' => 'Aizvērt',
     'confirm' => 'Apstiprināt',
     'back' => 'Atpakaļ',
     'save' => 'Saglabāt',
@@ -19,7 +20,7 @@ return [
     'description' => 'Apraksts',
     'role' => 'Loma',
     'cover_image' => 'Vāka attēls',
-    'cover_image_description' => 'Šim attēlam būtu jābūt aptuveni 440x250px.',
+    'cover_image_description' => 'This image should be approximately 440x250px although it will be flexibly scaled & cropped to fit the user interface in different scenarios as required, so actual dimensions for display will differ.',
 
     // Actions
     'actions' => 'Darbības',
@@ -41,6 +42,7 @@ return [
     'remove' => 'Noņemt',
     'add' => 'Pievienot',
     'configure' => 'Mainīt konfigurāciju',
+    'manage' => 'Pārvaldīt',
     'fullscreen' => 'Pilnekrāns',
     'favourite' => 'Pievienot favorītiem',
     'unfavourite' => 'Noņemt no favorītiem',
@@ -50,6 +52,7 @@ return [
     'filter_clear' => 'Notīrīt filtru',
     'download' => 'Lejupielādēt',
     'open_in_tab' => 'Atvērt cilnē',
+    'open' => 'Atvērt',
 
     // Sort Options
     'sort_options' => 'Kārtošanas Opcijas',

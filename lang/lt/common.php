@@ -6,6 +6,7 @@ return [
 
     // Buttons
     'cancel' => 'Atšaukti',
+    'close' => 'Close',
     'confirm' => 'Patvirtinti',
     'back' => 'Grįžti',
     'save' => 'Išsaugoti',
@@ -19,7 +20,7 @@ return [
     'description' => 'Apibūdinimas',
     'role' => 'Vaidmuo',
     'cover_image' => 'Viršelio nuotrauka',
-    'cover_image_description' => 'Ši nuotrauka turi būti maždaug 440x250px.',
+    'cover_image_description' => 'This image should be approximately 440x250px although it will be flexibly scaled & cropped to fit the user interface in different scenarios as required, so actual dimensions for display will differ.',
 
     // Actions
     'actions' => 'Veiksmai',
@@ -41,6 +42,7 @@ return [
     'remove' => 'Pašalinti',
     'add' => 'Pridėti',
     'configure' => 'Configure',
+    'manage' => 'Manage',
     'fullscreen' => 'Visas ekranas',
     'favourite' => 'Favourite',
     'unfavourite' => 'Unfavourite',
@@ -50,6 +52,7 @@ return [
     'filter_clear' => 'Clear Filter',
     'download' => 'Download',
     'open_in_tab' => 'Open in Tab',
+    'open' => 'Open',
 
     // Sort Options
     'sort_options' => 'Rūšiuoti pasirinkimus',

@@ -6,6 +6,7 @@ return [
 
     // Buttons
     'cancel' => 'Annulla',
+    'close' => 'Chiudi',
     'confirm' => 'Conferma',
     'back' => 'Indietro',
     'save' => 'Salva',
@@ -19,7 +20,7 @@ return [
     'description' => 'Descrizione',
     'role' => 'Ruolo',
     'cover_image' => 'Immagine di copertina',
-    'cover_image_description' => 'Questa immagine dovrebbe essere approssimativamente 440x250px.',
+    'cover_image_description' => 'L\'immagine dovrebbe essere di circa 440x250px, anche se verrà ridimensionata e ritagliata in modo flessibile per adattarsi all\'interfaccia utente in diversi scenari, quindi le dimensioni effettive per la visualizzazione saranno diverse.',
 
     // Actions
     'actions' => 'Azioni',
@@ -41,6 +42,7 @@ return [
     'remove' => 'Rimuovi',
     'add' => 'Aggiungi',
     'configure' => 'Configura',
+    'manage' => 'Gestisci',
     'fullscreen' => 'Schermo intero',
     'favourite' => 'Aggiungi ai Preferiti',
     'unfavourite' => 'Rimuovi dai preferiti',
@@ -50,6 +52,7 @@ return [
     'filter_clear' => 'Pulisci filtro',
     'download' => 'Download',
     'open_in_tab' => 'Apri nella scheda',
+    'open' => 'Apri',
 
     // Sort Options
     'sort_options' => 'Opzioni Ordinamento',

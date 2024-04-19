@@ -6,6 +6,7 @@ return [
 
     // Buttons
     'cancel' => 'Cancelar',
+    'close' => 'Fechar',
     'confirm' => 'Confirmar',
     'back' => 'Voltar',
     'save' => 'Salvar',
@@ -19,7 +20,7 @@ return [
     'description' => 'Descrição',
     'role' => 'Cargo',
     'cover_image' => 'Imagem de capa',
-    'cover_image_description' => 'Esta imagem deve ser aproximadamente 440x250px.',
+    'cover_image_description' => 'This image should be approximately 440x250px although it will be flexibly scaled & cropped to fit the user interface in different scenarios as required, so actual dimensions for display will differ.',
 
     // Actions
     'actions' => 'Ações',
@@ -41,6 +42,7 @@ return [
     'remove' => 'Remover',
     'add' => 'Adicionar',
     'configure' => 'Configurar',
+    'manage' => 'Administrar',
     'fullscreen' => 'Tela cheia',
     'favourite' => 'Favoritos',
     'unfavourite' => 'Remover dos Favoritos',
@@ -50,6 +52,7 @@ return [
     'filter_clear' => 'Limpar Filtro',
     'download' => 'Baixar',
     'open_in_tab' => 'Abrir na aba',
+    'open' => 'Abrir',
 
     // Sort Options
     'sort_options' => 'Opções de Ordenação',

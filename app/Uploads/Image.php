@@ -2,11 +2,11 @@
 
 namespace BookStack\Uploads;
 
-use BookStack\Auth\Permissions\JointPermission;
-use BookStack\Auth\Permissions\PermissionApplicator;
+use BookStack\App\Model;
 use BookStack\Entities\Models\Page;
-use BookStack\Model;
-use BookStack\Traits\HasCreatorAndUpdater;
+use BookStack\Permissions\Models\JointPermission;
+use BookStack\Permissions\PermissionApplicator;
+use BookStack\Users\Models\HasCreatorAndUpdater;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -45,13 +45,14 @@ class Image extends Model
     }
 
     /**
-     * Get a thumbnail for this image.
+     * Get a thumbnail URL for this image.
+     * Attempts to generate the thumbnail if not already existing.
      *
      * @throws \Exception
      */
-    public function getThumb(?int $width, ?int $height, bool $keepRatio = false): string
+    public function getThumb(?int $width, ?int $height, bool $keepRatio = false): ?string
     {
-        return app()->make(ImageService::class)->getThumbnail($this, $width, $height, $keepRatio);
+        return app()->make(ImageResizer::class)->resizeToThumbnailUrl($this, $width, $height, $keepRatio, false);
     }
 
     /**
