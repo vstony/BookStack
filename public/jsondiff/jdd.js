@@ -805,9 +805,11 @@ var jdd = {
             if (side === jdd.LEFT) {
                 $('#errorLeft').text(parseException.message).show();
                 $('#textarealeft').addClass('error');
+                console.log('#errorLeft: ', parseException.message);
             } else {
                 $('#errorRight').text(parseException.message).show();
                 $('#textarearight').addClass('error');
+                console.log('#errorRight: ', parseException.message);
             }
             return false;
         }
