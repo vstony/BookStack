@@ -10,6 +10,7 @@ return [
 
     // Auth
     'error_user_exists_different_creds' => 'Пользователь с электронной почтой :email уже существует, но с другими учетными данными.',
+    'auth_pre_register_theme_prevention' => 'User account could not be registered for the provided details',
     'email_already_confirmed' => 'Адрес электронной почты уже был подтвержден, попробуйте войти в систему.',
     'email_confirmation_invalid' => 'Этот токен подтверждения недействителен или уже используется. Повторите попытку регистрации.',
     'email_confirmation_expired' => 'Истек срок действия токена. Отправлено новое письмо с подтверждением.',
@@ -19,12 +20,10 @@ return [
     'ldap_extension_not_installed' => 'LDAP расширение для PHP не установлено',
     'ldap_cannot_connect' => 'Не удается подключиться к серверу LDAP, не удалось выполнить начальное соединение',
     'saml_already_logged_in' => 'Уже вошли в систему',
-    'saml_user_not_registered' => 'Пользователь :name не зарегистрирован. Автоматическая регистрация отключена',
     'saml_no_email_address' => 'Не удалось найти email для этого пользователя в данных, предоставленных внешней системой аутентификации',
     'saml_invalid_response_id' => 'Запрос от внешней системы аутентификации не распознается процессом, запущенным этим приложением. Переход назад после входа в систему может вызвать эту проблему.',
     'saml_fail_authed' => 'Вход с помощью :system не удался, система не предоставила успешную авторизацию',
     'oidc_already_logged_in' => 'Вход в систему уже произведен',
-    'oidc_user_not_registered' => 'Пользователь :name не зарегистрирован и автоматическая регистрация отключена',
     'oidc_no_email_address' => 'Не удалось найти email этого пользователя в данных, предоставленных внешней системой аутентификации',
     'oidc_fail_authed' => 'Вход в систему с помощью :system не удался, система не обеспечила успешную авторизацию',
     'social_no_action_defined' => 'Действие не определено',
@@ -44,19 +43,25 @@ return [
     'cannot_get_image_from_url' => 'Не удается получить изображение из :url',
     'cannot_create_thumbs' => 'Сервер не может создавать эскизы. Убедитесь, что у вас установлено расширение GD PHP.',
     'server_upload_limit' => 'Сервер не разрешает загрузку файлов такого размера. Попробуйте уменьшить размер файла.',
+    'server_post_limit' => 'The server cannot receive the provided amount of data. Try again with less data or a smaller file.',
     'uploaded'  => 'Сервер не позволяет загружать файлы такого размера. Пожалуйста, попробуйте файл меньше.',
 
     // Drawing & Images
     'image_upload_error' => 'Произошла ошибка при загрузке изображения',
     'image_upload_type_error' => 'Неправильный тип загружаемого изображения',
+    'image_upload_replace_type' => 'Замена файла изображения должна быть того же типа',
+    'image_upload_memory_limit' => 'Failed to handle image upload and/or create thumbnails due to system resource limits.',
+    'image_thumbnail_memory_limit' => 'Failed to create image size variations due to system resource limits.',
+    'image_gallery_thumbnail_memory_limit' => 'Failed to create gallery thumbnails due to system resource limits.',
     'drawing_data_not_found' => 'Данные чертежа не могут быть загружены. Возможно, файл чертежа больше не существует или у вас нет разрешения на доступ к нему.',
 
     // Attachments
     'attachment_not_found' => 'Вложение не найдено',
-    'attachment_upload_error' => 'An error occurred uploading the attachment file',
+    'attachment_upload_error' => 'Произошла ошибка при загрузке вложенного файла',
 
     // Pages
     'page_draft_autosave_fail' => 'Не удалось сохранить черновик. Перед сохранением этой страницы убедитесь, что у вас есть подключение к Интернету.',
+    'page_draft_delete_fail' => 'Не удалось удалить черновик страницы и получить текущее сохраненное содержимое страницы',
     'page_custom_home_deletion' => 'Невозможно удалить страницу, пока она установлена как домашняя страница',
 
     // Entities
@@ -109,4 +114,6 @@ return [
     // Settings & Maintenance
     'maintenance_test_email_failure' => 'Ошибка при отправке тестового письма:',
 
+    // HTTP errors
+    'http_ssr_url_no_match' => 'URL-адрес не соответствует настроенным разрешенным хостам SSR',
 ];

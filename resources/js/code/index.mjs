@@ -48,14 +48,21 @@ function highlightElem(elem) {
     const content = elem.textContent.trimEnd();
 
     let langName = '';
+    let innerCodeDirection = '';
     if (innerCodeElem !== null) {
         langName = innerCodeElem.className.replace('language-', '');
+        innerCodeDirection = innerCodeElem.getAttribute('dir');
     }
 
     const wrapper = document.createElement('div');
     elem.parentNode.insertBefore(wrapper, elem);
 
-    const ev = createView({
+    const direction = innerCodeDirection || elem.getAttribute('dir') || '';
+    if (direction) {
+        wrapper.setAttribute('dir', direction);
+    }
+
+    const ev = createView('content-code-block', {
         parent: wrapper,
         doc: content,
         extensions: viewerExtensions(wrapper),
@@ -99,7 +106,7 @@ export function highlight() {
  * @returns {SimpleEditorInterface}
  */
 export function wysiwygView(cmContainer, shadowRoot, content, language) {
-    const ev = createView({
+    const ev = createView('content-code-block', {
         parent: cmContainer,
         doc: content,
         extensions: viewerExtensions(cmContainer),
@@ -125,16 +132,11 @@ export function popupEditor(elem, modeSuggestion) {
         doc: content,
         extensions: [
             ...editorExtensions(elem.parentElement),
-            EditorView.updateListener.of(v => {
-                if (v.docChanged) {
-                    // textArea.value = v.state.doc.toString();
-                }
-            }),
         ],
     };
 
     // Create editor, hide original input
-    const editor = new SimpleEditorInterface(createView(config));
+    const editor = new SimpleEditorInterface(createView('code-editor', config));
     editor.setMode(modeSuggestion, content);
     elem.style.display = 'none';
 
@@ -163,7 +165,7 @@ export function inlineEditor(textArea, mode) {
     };
 
     // Create editor view, hide original input
-    const ev = createView(config);
+    const ev = createView('code-input', config);
     const editor = new SimpleEditorInterface(ev);
     editor.setMode(mode, content);
     textArea.style.display = 'none';
@@ -198,7 +200,7 @@ export function markdownEditor(elem, onChange, domEventHandlers, keyBindings) {
     window.$events.emitPublic(elem, 'editor-markdown-cm6::pre-init', {editorViewConfig: config});
 
     // Create editor view, hide original input
-    const ev = createView(config);
+    const ev = createView('markdown-editor', config);
     (new SimpleEditorInterface(ev)).setMode('markdown', '');
     elem.style.display = 'none';
 

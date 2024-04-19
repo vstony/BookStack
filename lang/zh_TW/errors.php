@@ -10,6 +10,7 @@ return [
 
     // Auth
     'error_user_exists_different_creds' => '電子郵件為 :email 已存在，但帳號密碼不同。',
+    'auth_pre_register_theme_prevention' => 'User account could not be registered for the provided details',
     'email_already_confirmed' => '已確認電子郵件，請嘗試登入。',
     'email_confirmation_invalid' => '這個確認權杖無效或已被使用，請嘗試重新註冊。',
     'email_confirmation_expired' => '這個確認權杖無效或已被使用，已傳送新的確認電子郵件。',
@@ -19,12 +20,10 @@ return [
     'ldap_extension_not_installed' => '未安裝 PHP 的 LDAP 擴充程式',
     'ldap_cannot_connect' => '無法連線至 LDAP 伺服器，初始化連線失敗',
     'saml_already_logged_in' => '已登入',
-    'saml_user_not_registered' => '使用者 :name 未註冊，並已停用自動註冊',
     'saml_no_email_address' => '在外部認證系統提供的資料中找不到該使用者的電子郵件地址',
     'saml_invalid_response_id' => '此應用程式啟動的處理程序無法識別來自外部認證系統的請求。登入後回上一頁可能會造成此問題。',
     'saml_fail_authed' => '使用 :system 登入失敗，系統未提供成功的授權',
     'oidc_already_logged_in' => '已登入',
-    'oidc_user_not_registered' => '使用者 :name 未註冊，並已停用自動註冊',
     'oidc_no_email_address' => '在外部認證系統提供的資料中找不到該使用者的電子郵件地址',
     'oidc_fail_authed' => '使用 :system 登入失敗，系統未提供成功的授權',
     'social_no_action_defined' => '未定義動作',
@@ -44,11 +43,16 @@ return [
     'cannot_get_image_from_url' => '無法從 :url 取得圖片',
     'cannot_create_thumbs' => '伺服器無法建立縮圖。請檢查您是否安裝了 PHP 的 GD 擴充程式。',
     'server_upload_limit' => '伺服器不允許上傳這個大的檔案。請嘗試較小的檔案。',
+    'server_post_limit' => 'The server cannot receive the provided amount of data. Try again with less data or a smaller file.',
     'uploaded'  => '伺服器不允許上傳這個大的檔案。請嘗試較小的檔案。',
 
     // Drawing & Images
     'image_upload_error' => '上傳圖片時發生錯誤',
     'image_upload_type_error' => '上傳圖片類型無效',
+    'image_upload_replace_type' => 'Image file replacements must be of the same type',
+    'image_upload_memory_limit' => 'Failed to handle image upload and/or create thumbnails due to system resource limits.',
+    'image_thumbnail_memory_limit' => 'Failed to create image size variations due to system resource limits.',
+    'image_gallery_thumbnail_memory_limit' => 'Failed to create gallery thumbnails due to system resource limits.',
     'drawing_data_not_found' => '無法載入繪圖資料，繪圖檔案可能不存在，或您可能沒有權限存取它。',
 
     // Attachments
@@ -57,6 +61,7 @@ return [
 
     // Pages
     'page_draft_autosave_fail' => '無法儲存草稿。請確保您在儲存此頁面前已連線至網際網路',
+    'page_draft_delete_fail' => 'Failed to delete page draft and fetch current page saved content',
     'page_custom_home_deletion' => '無法刪除被設定為首頁的頁面',
 
     // Entities
@@ -109,4 +114,6 @@ return [
     // Settings & Maintenance
     'maintenance_test_email_failure' => '寄送測試電子郵件時發生錯誤:',
 
+    // HTTP errors
+    'http_ssr_url_no_match' => 'The URL does not match the configured allowed SSR hosts',
 ];

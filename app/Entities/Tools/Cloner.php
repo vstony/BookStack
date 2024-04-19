@@ -2,7 +2,7 @@
 
 namespace BookStack\Entities\Tools;
 
-use BookStack\Actions\Tag;
+use BookStack\Activity\Models\Tag;
 use BookStack\Entities\Models\Book;
 use BookStack\Entities\Models\Bookshelf;
 use BookStack\Entities\Models\Chapter;
@@ -77,7 +77,7 @@ class Cloner
         $copyBook = $this->bookRepo->create($bookDetails);
 
         // Clone contents
-        $directChildren = $original->getDirectChildren();
+        $directChildren = $original->getDirectVisibleChildren();
         foreach ($directChildren as $child) {
             if ($child instanceof Chapter && userCan('chapter-create', $copyBook)) {
                 $this->cloneChapter($child, $copyBook, $child->name);

@@ -2,9 +2,10 @@
 
 namespace Tests\Entity;
 
-use BookStack\Actions\Tag;
+use BookStack\Activity\Models\Tag;
 use BookStack\Entities\Models\Book;
 use BookStack\Entities\Models\Bookshelf;
+use BookStack\Entities\Models\Chapter;
 use Tests\TestCase;
 
 class EntitySearchTest extends TestCase
@@ -225,6 +226,17 @@ class EntitySearchTest extends TestCase
         $chapterSearch->assertSee($chapter->book->getShortName(42));
     }
 
+    public function test_entity_selector_shows_breadcrumbs_on_default_view()
+    {
+        $page = $this->entities->pageWithinChapter();
+        $this->asEditor()->get($page->chapter->getUrl());
+
+        $resp = $this->asEditor()->get('/search/entity-selector?types=book,chapter&permission=page-create');
+        $html = $this->withHtml($resp);
+        $html->assertElementContains('.chapter.entity-list-item', $page->chapter->name);
+        $html->assertElementContains('.chapter.entity-list-item .entity-item-snippet', $page->book->getShortName(42));
+    }
+
     public function test_entity_selector_search_reflects_items_without_permission()
     {
         $page = $this->entities->page();
@@ -238,6 +250,39 @@ class EntitySearchTest extends TestCase
         $resp = $this->actingAs($this->users->viewer())->get($searchUrl);
         $this->withHtml($resp)->assertElementContains($baseSelector, $page->name);
         $this->withHtml($resp)->assertElementContains($baseSelector, "You don't have the required permissions to select this item");
+    }
+
+    public function test_entity_template_selector_search()
+    {
+        $templatePage = $this->entities->newPage(['name' => 'Template search test', 'html' => 'template test']);
+        $templatePage->template = true;
+        $templatePage->save();
+
+        $nonTemplatePage = $this->entities->newPage(['name' => 'Nontemplate page', 'html' => 'nontemplate', 'template' => false]);
+
+        // Visit both to make popular
+        $this->asEditor()->get($templatePage->getUrl());
+        $this->get($nonTemplatePage->getUrl());
+
+        $normalSearch = $this->get('/search/entity-selector-templates?term=test');
+        $normalSearch->assertSee($templatePage->name);
+        $normalSearch->assertDontSee($nonTemplatePage->name);
+
+        $normalSearch = $this->get('/search/entity-selector-templates?term=beans');
+        $normalSearch->assertDontSee($templatePage->name);
+        $normalSearch->assertDontSee($nonTemplatePage->name);
+
+        $defaultListTest = $this->get('/search/entity-selector-templates');
+        $defaultListTest->assertSee($templatePage->name);
+        $defaultListTest->assertDontSee($nonTemplatePage->name);
+
+        $this->permissions->disableEntityInheritedPermissions($templatePage);
+
+        $normalSearch = $this->get('/search/entity-selector-templates?term=test');
+        $normalSearch->assertDontSee($templatePage->name);
+
+        $defaultListTest = $this->get('/search/entity-selector-templates');
+        $defaultListTest->assertDontSee($templatePage->name);
     }
 
     public function test_sibling_search_for_pages()
@@ -258,7 +303,7 @@ class EntitySearchTest extends TestCase
     public function test_sibling_search_for_pages_without_chapter()
     {
         $page = $this->entities->pageNotWithinChapter();
-        $bookChildren = $page->book->getDirectChildren();
+        $bookChildren = $page->book->getDirectVisibleChildren();
         $this->assertGreaterThan(2, count($bookChildren), 'Ensure we\'re testing with at least 1 sibling');
 
         $search = $this->actingAs($this->users->viewer())->get("/search/entity/siblings?entity_id={$page->id}&entity_type=page");
@@ -273,7 +318,7 @@ class EntitySearchTest extends TestCase
     public function test_sibling_search_for_chapters()
     {
         $chapter = $this->entities->chapter();
-        $bookChildren = $chapter->book->getDirectChildren();
+        $bookChildren = $chapter->book->getDirectVisibleChildren();
         $this->assertGreaterThan(2, count($bookChildren), 'Ensure we\'re testing with at least 1 sibling');
 
         $search = $this->actingAs($this->users->viewer())->get("/search/entity/siblings?entity_id={$chapter->id}&entity_type=chapter");
@@ -309,6 +354,42 @@ class EntitySearchTest extends TestCase
         foreach ($shelves as $expectedShelf) {
             $search->assertSee($expectedShelf->name);
         }
+    }
+
+    public function test_sibling_search_for_books_provides_results_in_alphabetical_order()
+    {
+        $contextBook = $this->entities->book();
+        $searchBook = $this->entities->book();
+
+        $searchBook->name = 'Zebras';
+        $searchBook->save();
+
+        $search = $this->actingAs($this->users->viewer())->get("/search/entity/siblings?entity_id={$contextBook->id}&entity_type=book");
+        $this->withHtml($search)->assertElementNotContains('a:first-child', 'Zebras');
+
+        $searchBook->name = 'AAAAAAArdvarks';
+        $searchBook->save();
+
+        $search = $this->actingAs($this->users->viewer())->get("/search/entity/siblings?entity_id={$contextBook->id}&entity_type=book");
+        $this->withHtml($search)->assertElementContains('a:first-child', 'AAAAAAArdvarks');
+    }
+
+    public function test_sibling_search_for_shelves_provides_results_in_alphabetical_order()
+    {
+        $contextShelf = $this->entities->shelf();
+        $searchShelf = $this->entities->shelf();
+
+        $searchShelf->name = 'Zebras';
+        $searchShelf->save();
+
+        $search = $this->actingAs($this->users->viewer())->get("/search/entity/siblings?entity_id={$contextShelf->id}&entity_type=bookshelf");
+        $this->withHtml($search)->assertElementNotContains('a:first-child', 'Zebras');
+
+        $searchShelf->name = 'AAAAAAArdvarks';
+        $searchShelf->save();
+
+        $search = $this->actingAs($this->users->viewer())->get("/search/entity/siblings?entity_id={$contextShelf->id}&entity_type=bookshelf");
+        $this->withHtml($search)->assertElementContains('a:first-child', 'AAAAAAArdvarks');
     }
 
     public function test_search_works_on_updated_page_content()
@@ -454,10 +535,10 @@ class EntitySearchTest extends TestCase
         $search = $this->asEditor()->get('/search?term=' . urlencode('\\\\cat\\dog'));
         $search->assertSee($page->getUrl(), false);
 
-        $search = $this->asEditor()->get('/search?term=' . urlencode('"\\dog\\"'));
+        $search = $this->asEditor()->get('/search?term=' . urlencode('"\\dog\\\\"'));
         $search->assertSee($page->getUrl(), false);
 
-        $search = $this->asEditor()->get('/search?term=' . urlencode('"\\badger\\"'));
+        $search = $this->asEditor()->get('/search?term=' . urlencode('"\\badger\\\\"'));
         $search->assertDontSee($page->getUrl(), false);
 
         $search = $this->asEditor()->get('/search?term=' . urlencode('[\\Categorylike%\\fluffy]'));

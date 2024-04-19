@@ -10,6 +10,7 @@ return [
 
     // Auth
     'error_user_exists_different_creds' => 'See e-posti aadress on juba seotud teise kasutajaga.',
+    'auth_pre_register_theme_prevention' => 'User account could not be registered for the provided details',
     'email_already_confirmed' => 'E-posti aadress on juba kinnitatud. Proovi sisse logida.',
     'email_confirmation_invalid' => 'Kinnituslink ei ole kehtiv või on seda juba kasutatud. Proovi uuesti registreeruda.',
     'email_confirmation_expired' => 'Kinnituslink on aegunud. Sulle saadeti aadressi kinnitamiseks uus e-kiri.',
@@ -19,12 +20,10 @@ return [
     'ldap_extension_not_installed' => 'PHP LDAP laiendus ei ole paigaldatud',
     'ldap_cannot_connect' => 'Ühendus LDAP serveriga ebaõnnestus',
     'saml_already_logged_in' => 'Juba sisse logitud',
-    'saml_user_not_registered' => 'Kasutaja :name ei ole registreeritud ning automaatne registreerimine on keelatud',
     'saml_no_email_address' => 'Selle kasutaja e-posti aadressi ei õnnestunud välisest autentimissüsteemist leida',
     'saml_invalid_response_id' => 'Välisest autentimissüsteemist tulnud päringut ei algatatud sellest rakendusest. Seda viga võib põhjustada pärast sisselogimist tagasi liikumine.',
     'saml_fail_authed' => 'Sisenemine :system kaudu ebaõnnestus, süsteem ei andnud volitust',
     'oidc_already_logged_in' => 'Juba sisse logitud',
-    'oidc_user_not_registered' => 'Kasutaja :name ei ole registreeritud ning automaatne registreerimine on keelatud',
     'oidc_no_email_address' => 'Selle kasutaja e-posti aadressi ei õnnestunud välisest autentimissüsteemist leida',
     'oidc_fail_authed' => 'Sisenemine :system kaudu ebaõnnestus, süsteem ei andnud volitust',
     'social_no_action_defined' => 'Tegevus on defineerimata',
@@ -44,11 +43,16 @@ return [
     'cannot_get_image_from_url' => 'Ei suutnud laadida pilti aadressilt :url',
     'cannot_create_thumbs' => 'Server ei saa piltide eelvaateid tekitada. Veendu, et PHP GD laiendus on paigaldatud.',
     'server_upload_limit' => 'Server ei luba nii suurte failide üleslaadimist. Proovi väiksema failiga.',
+    'server_post_limit' => 'Server ei saa etteantud andmemahtu vastu võtta. Proovi uuesti väiksema failiga.',
     'uploaded'  => 'Server ei luba nii suurte failide üleslaadimist. Proovi väiksema failiga.',
 
     // Drawing & Images
     'image_upload_error' => 'Pildi üleslaadimisel tekkis viga',
     'image_upload_type_error' => 'Pildifaili tüüp ei ole korrektne',
+    'image_upload_replace_type' => 'Pildifaili asendused peavad olema sama tüüpi',
+    'image_upload_memory_limit' => 'Pildi üleslaadimine ja/või eelvaadete tekitamine ebaõnnestus süsteemsete ressursipiirangute tõttu.',
+    'image_thumbnail_memory_limit' => 'Pildi eelvaadete tekitamine ebaõnnestus süsteemsete ressursipiirangute tõttu.',
+    'image_gallery_thumbnail_memory_limit' => 'Galerii eelvaadete tekitamine ebaõnnestus süsteemsete ressursipiirangute tõttu.',
     'drawing_data_not_found' => 'Joonise andmeid ei õnnestunud laadida. Joonist ei pruugi enam eksisteerida, või sul puuduvad õigused selle vaatamiseks.',
 
     // Attachments
@@ -57,6 +61,7 @@ return [
 
     // Pages
     'page_draft_autosave_fail' => 'Mustandi salvestamine ebaõnnestus. Kontrolli oma internetiühendust',
+    'page_draft_delete_fail' => 'Mustandi kustutamine ja lehe salvestatud seisu laadimine ebaõnnestus',
     'page_custom_home_deletion' => 'Ei saa kustutada lehte, mis on määratud avaleheks',
 
     // Entities
@@ -109,4 +114,6 @@ return [
     // Settings & Maintenance
     'maintenance_test_email_failure' => 'Test e-kirja saatmisel tekkis viga:',
 
+    // HTTP errors
+    'http_ssr_url_no_match' => 'URL ei klapi ühegi lubatud SSR hostiga',
 ];

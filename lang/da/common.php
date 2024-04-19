@@ -6,6 +6,7 @@ return [
 
     // Buttons
     'cancel' => 'Annuller',
+    'close' => 'Close',
     'confirm' => 'Bekræft',
     'back' => 'Tilbage',
     'save' => 'Gem',
@@ -19,7 +20,7 @@ return [
     'description' => 'Beskrivelse',
     'role' => 'Rolle',
     'cover_image' => 'Coverbillede',
-    'cover_image_description' => 'Dette billede skal være omtrent 440x250px.',
+    'cover_image_description' => 'This image should be approximately 440x250px although it will be flexibly scaled & cropped to fit the user interface in different scenarios as required, so actual dimensions for display will differ.',
 
     // Actions
     'actions' => 'Handlinger',
@@ -41,6 +42,7 @@ return [
     'remove' => 'Fjern',
     'add' => 'Tilføj',
     'configure' => 'Konfigurer',
+    'manage' => 'Manage',
     'fullscreen' => 'Fuld skærm',
     'favourite' => 'Foretrukken',
     'unfavourite' => 'Fjern som foretrukken',
@@ -50,6 +52,7 @@ return [
     'filter_clear' => 'Nulstil Filter',
     'download' => 'Hent',
     'open_in_tab' => 'Åben i ny fane',
+    'open' => 'Open',
 
     // Sort Options
     'sort_options' => 'Sorteringsindstillinger',

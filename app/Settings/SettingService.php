@@ -2,7 +2,7 @@
 
 namespace BookStack\Settings;
 
-use BookStack\Auth\User;
+use BookStack\Users\Models\User;
 
 /**
  * Class SettingService
@@ -47,7 +47,7 @@ class SettingService
             $default = config('setting-defaults.user.' . $key, false);
         }
 
-        if ($user->isDefault()) {
+        if ($user->isGuest()) {
             return $this->getFromSession($key, $default);
         }
 
@@ -206,7 +206,7 @@ class SettingService
      */
     public function putUser(User $user, string $key, string $value): bool
     {
-        if ($user->isDefault()) {
+        if ($user->isGuest()) {
             session()->put($key, $value);
 
             return true;

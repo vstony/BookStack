@@ -10,6 +10,7 @@ return [
 
     // Auth
     'error_user_exists_different_creds' => 'Un utente con la mail :email esiste già ma con credenziali differenti.',
+    'auth_pre_register_theme_prevention' => 'Non è stato possibile registrare l\'account utente coi dettagli forniti',
     'email_already_confirmed' => 'La mail è già stata confermata, esegui il login.',
     'email_confirmation_invalid' => 'Questo token di conferma non è valido o già stato utilizzato, registrati nuovamente.',
     'email_confirmation_expired' => 'Il token di conferma è scaduto, è stata inviata una nuova mail di conferma.',
@@ -19,12 +20,10 @@ return [
     'ldap_extension_not_installed' => 'L\'estensione PHP LDAP non è installata',
     'ldap_cannot_connect' => 'Impossibile connettersi al server ldap, connessione iniziale fallita',
     'saml_already_logged_in' => 'Già loggato',
-    'saml_user_not_registered' => 'L\'utente :name non è registrato e la registrazione automatica è disabilitata',
     'saml_no_email_address' => 'Impossibile trovare un indirizzo email per questo utente nei dati forniti dal sistema di autenticazione esterno',
     'saml_invalid_response_id' => 'La richiesta dal sistema di autenticazione esterno non è riconosciuta da un processo iniziato da questa applicazione. Tornare indietro dopo un login potrebbe causare questo problema.',
     'saml_fail_authed' => 'Accesso con :system non riuscito, il sistema non ha fornito l\'autorizzazione corretta',
     'oidc_already_logged_in' => 'Hai già effettuato il login',
-    'oidc_user_not_registered' => 'L\'utente :name non è registrato e la registrazione automatica è disabilitata',
     'oidc_no_email_address' => 'Impossibile trovare un indirizzo email, per questo utente, nei dati forniti dal sistema di autenticazione esterno',
     'oidc_fail_authed' => 'Accesso con :system non riuscito, il sistema non ha fornito l\'autorizzazione',
     'social_no_action_defined' => 'Nessuna azione definita',
@@ -44,11 +43,16 @@ return [
     'cannot_get_image_from_url' => 'Impossibile scaricare immagine da :url',
     'cannot_create_thumbs' => 'Il server non può creare thumbnail. Controlla che l\'estensione GD sia installata.',
     'server_upload_limit' => 'Il server non permette un upload di questa grandezza. Prova con un file più piccolo.',
+    'server_post_limit' => 'Il server non può ricevere la quantità di dati fornita. Riprovare con meno dati o con un file più piccolo.',
     'uploaded'  => 'Il server non consente upload di questa grandezza. Prova un file più piccolo.',
 
     // Drawing & Images
     'image_upload_error' => 'C\'è stato un errore caricando l\'immagine',
     'image_upload_type_error' => 'Il tipo di immagine caricata non è valido',
+    'image_upload_replace_type' => 'Le sostituzioni di file immagine devono essere dello stesso tipo',
+    'image_upload_memory_limit' => 'Impossibile gestire il caricamento d\'immagini e/o creare miniature a causa dei limiti delle risorse di sistema.',
+    'image_thumbnail_memory_limit' => 'Impossibile creare variazioni delle dimensioni dell\'immagine a causa dei limiti delle risorse di sistema.',
+    'image_gallery_thumbnail_memory_limit' => 'Impossibile creare le miniature della galleria a causa dei limiti delle risorse di sistema.',
     'drawing_data_not_found' => 'Non è stato possibile caricare i dati del disegno. È possibile che il file del disegno non esista più o che non si abbia il permesso di accedervi.',
 
     // Attachments
@@ -57,6 +61,7 @@ return [
 
     // Pages
     'page_draft_autosave_fail' => 'Impossibile salvare la bozza. Controlla di essere connesso ad internet prima di salvare questa pagina',
+    'page_draft_delete_fail' => 'Impossibile eliminare la bozza di pagina e recuperare i contenuti salvati nella pagina corrente',
     'page_custom_home_deletion' => 'Impossibile eliminare una pagina quando è impostata come homepage',
 
     // Entities
@@ -109,4 +114,6 @@ return [
     // Settings & Maintenance
     'maintenance_test_email_failure' => 'Si è verificato un errore durante l\'invio di una e-mail di prova:',
 
+    // HTTP errors
+    'http_ssr_url_no_match' => 'L\'URL non corrisponde agli host SSR configurati',
 ];
